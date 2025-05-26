@@ -1,0 +1,6 @@
+id,Codice,Tipo intervento,Data programmata,Data intervento,ASP1-filtri,ASP2-ruote,ASP3-interruttori,ASP4-pulizia,ASP5-spugne,ASP6-note,LAV1-batt,LAV2-ruote,LAV3-gomme,LAV4-pulizia,LAV5-tubaz,LAV6-gen,LAV7-note
+1,1,ordinario,28/02/2025,,,,,,,,,,,,,,,
+2,2,ordinario,28/05/2025,,,,,,,,,,,,,,
+3,6,ordinario,15/05/2025,,,,,,,,,,,,,,
+4,4,ordinario,17/04/2025,,,,,,,,,,,,,,
+5,1,ordinario,29/05/2025,,,,,,,,,,,,,,
