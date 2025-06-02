@@ -1,10 +1,11 @@
 Codice,Matricola,Tipologia,Descrizione,Commessa,Attivo,Data dismissione,
-1,12345,K1200w,Aspiratore,COMEF,Si
-2,A1,3,Lavasciuga,4,5,6
-3,1BA,3,Aspiratore,4,5,6
-4,1ALE,3,Aspiratore,4,5,6
-5,1BNICO,3,Lavasciuga,4,5,6
-6,2A34,3,Lavasciuga,4,5,6
-7,67B8,2,Lavasciuga,4,5,6
-8,abc987,lalla,poppo,pio,Si,
-9,KWE74636,KOBRA 3055,Lavasciuga,CURIA,Si,
+1,12345,K1200w,Aspiratore,CLIENTE 1,Si,
+2,A1792,ALFA1,Lavasciuga,CLIENTE 2,Si,
+3,1BA594,BETA1000,Aspiratore,CLIENTE 3,Si,
+4,1A4738,ALEX123,Aspiratore,CLIENTE 4,Si,
+5,1B659,GAMMA100,Lavasciuga,CLIENTE 5,Si,
+6,2A34,ALFA1,Lavasciuga,CLIENTE 5,Si,
+7,67B8,K2000W,Lavasciuga,CLIENTE 2,Si,
+8,ABC987,GAMMA1,Aspiratore,CLIENTE 4,Si,
+9,KWE74636,KOBRA1000,Lavasciuga,CLIENTE 6,Si,
+10,9551,P23'HE,Aspiratore,CLIENTE 6,Si,
