@@ -1,6 +1,8 @@
+"""
+Allows to view next maintenance and to handle it when it is completed with the "Gestisci" button.
+Data can be filtered by date and past maintenance can be seen
+"""
 from tkinter.ttk import Treeview
-import pandas
-from datetime import datetime
 from UIChecklist import *
 
 global count
@@ -43,21 +45,21 @@ class Manutenzioni:
         self.manut_tree.heading("Data intervento", text="Data intervento")
         self.manut_tree.heading("Note", text="Note")
 
+        self.manut_tree.grid(row=2,column=0,pady=10,padx=10,columnspan=6)
+
         self.checklist_button= Button(self.manut_window, text="Gestisci", command=self.checklist_start)
+        self.checklist_button.grid(row=3,column=0,pady=10,padx=10)
 
-        self.tipo_vista_button = Button(self.manut_window,text="Vedi da effettuare", command=self.change_view)
+        self.tipo_vista_button = Button(self.manut_window,text="Vedi effettuate", command=self.change_view)
+        self.tipo_vista_button.grid(row=0,column=0,pady=10,padx=10,sticky="w")
 
+        #view filter and positioning
         self.filtro_data_lbl = Label(self.manut_window, text="Filtro date",width=20)
         self.data_da_lbl = Label(self.manut_window, text="Dal", width=20)
         self.data_da_entry = Entry(self.manut_window,width=20)
         self.data_a_lbl = Label(self.manut_window, text="al", width=20)
         self.data_a_entry = Entry(self.manut_window,width=20)
         self.data_button = Button(self.manut_window,width=20,text="Filtra",command=self.date_filter)
-
-
-
-        #Posizione
-        self.tipo_vista_button.grid(row=0,column=0,pady=10,padx=10,sticky="w")
 
         self.filtro_data_lbl.grid(row=1, column=0, sticky="w")
         self.data_da_lbl.grid(row=1, column=1, sticky="w")
@@ -66,18 +68,13 @@ class Manutenzioni:
         self.data_a_entry.grid(row=1, column=4, sticky="w")
         self.data_button.grid(row=1, column=5, sticky="w")
 
-        self.manut_tree.grid(row=2,column=0,pady=10,padx=10,columnspan=5)
 
-        self.checklist_button.grid(row=3,column=0,pady=10,padx=10)
-
-
-
-        self.populate_tree(codice=self.codice_iniziale, date=" ")
+        self.populate_tree2(codice=self.codice_iniziale, date=" ")
 
         self.manut_window.mainloop()
 
     def checklist_start(self):
-        """Start new chacklist based on the treeview selection"""
+        """Start new checklist based on the treeview selection"""
         tipo_attr = self.manut_tree.item(self.manut_tree.selection())['values'][4]
         matr= self.manut_tree.item(self.manut_tree.selection())['values'][2]
         tipo = self.manut_tree.item(self.manut_tree.selection())['values'][3]
@@ -117,23 +114,6 @@ class Manutenzioni:
 
             count+=1
 
-    def populate_tree(self,codice,date):
-        """fill the Treeview with all values from manutenzioni.csv"""
-        file = pandas.read_csv("anagrafica/manutenzioni.csv")
-        df_file_start = pandas.DataFrame(file)
-
-        codice = self.codice_iniziale
-        if codice == "all" and date =="all":
-            df_file_man = df_file_start
-        elif codice != "all"and date == "all":
-            df_file_man=df_file_start[df_file_start["Codice"]==codice]
-        elif date==" ":
-            df_file_man = df_file_start[df_file_start["Data intervento"] == date]
-        #elif codice =="all" and isinstance(date,datetime):
-        else:
-            df_file_man=df_file_start[df_file_start["Data intervento"]>=date]
-        self.tree_values(df_file_man)
-
 
     def search_attr(self,codice):
         """return dictionary of the values corresponding to codice in anagrafica.csv"""
@@ -146,17 +126,17 @@ class Manutenzioni:
         return df_newfile_dict
 
     def change_view(self):
-        """Changes data shown in treeview"""
+        """Changes data shown in treeview choosing between past maintenance and the next ones"""
         data_zero = datetime(1900,1,1)
         data_zero_format = data_zero.strftime("%d/%m/%Y")
         actual_view= self.manut_tree.item(0)["values"][8]
 
         if actual_view ==" ":
             self.tipo_vista_button.config(text="Vedi da effettuare")
-            self.populate_tree(codice="all",date=data_zero_format)
+            self.populate_tree2(codice="all",date=data_zero_format)
         else:
             self.tipo_vista_button.config(text="Vedi effettuate")
-            self.populate_tree(codice="all",date=" ")
+            self.populate_tree2(codice="all",date=" ")
 
     def date_filter(self):
         """Filter the data shown by the treeview beetweeen the data given in the form"""
@@ -176,12 +156,13 @@ class Manutenzioni:
         file = pandas.read_csv("anagrafica/manutenzioni.csv")
         df_file_start = pandas.DataFrame(file)
 
-        codice = self.codice_iniziale
+        if codice !="all":
+            codice = self.codice_iniziale
         if date_to =="0" or date_from=="0":
             if codice == "all" and date =="all":
                 df_file_man = df_file_start
-            elif codice != "all"and date == "all":
-                df_file_man=df_file_start[df_file_start["Codice"]==codice]
+            elif codice != "all"and date != "all":
+                df_file_man=df_file_start[(df_file_start["Codice"]==codice) & (df_file_start["Data intervento"] == date)]
             elif date==" ":
                 df_file_man = df_file_start[df_file_start["Data intervento"] == date]
             else:
