@@ -1,3 +1,12 @@
+"""
+TkInter interface to visualize alla the machines from anagrafica.csv and:
+- Button "Aggiungi": add new machines to anagrafica.csv by filling all the text and checkbox widgets
+- Button "Cerca": search through anagrafica.csv by filling even partially only the necessary widgets
+- Button "Manutenzioni": allows to see the next maintenance for the selected machine
+- Button "Crea prima manutenzione": active only for new machines, creates the first manteinance 90 days later
+"""
+
+
 from datetime import datetime,timedelta
 from tkinter import *
 import csv
@@ -12,7 +21,7 @@ class Anagrafica:
         self.anagr_window.title("Anagrafica")
         self.anagr_window.config(width=1000,height=600)
 
-        #Labels, textbox e posizionamento
+        #Labels, textbox, checkboxe positioning
         self.matr_label = Label(self.anagr_window,text="Matricola")
         self.matr_text = Entry(self.anagr_window,width=20)
         self.matr_label.grid(row=0,column=0,pady=10, padx=10)
@@ -28,18 +37,16 @@ class Anagrafica:
         self.descrizione_label.grid(row=2,column=0,pady=10, padx=10)
         self.descrizione_text.grid(row=2,column=1,pady=10, padx=10)
 
-        #elenco commesse combobox
+        #retrieves customer list for combobox
         file = pandas.read_csv("anagrafica/commesse.csv")
         df_commesse = pandas.DataFrame(file)
         elenco_comm = df_commesse["nomecomm"].to_list()
-        print(elenco_comm)
 
         self.commessa_label = Label(self.anagr_window,text="Commessa")
         self.commessa_label.grid(row=3,column=0,pady=10, padx=10)
-        self.commessa_cbx = Combobox(self.anagr_window, values=elenco_comm,width=1)
+        self.commessa_cbx = Combobox(self.anagr_window, values=elenco_comm,width=15)
         self.commessa_cbx.grid(row=3, column=1, pady=10, padx=10)
-        """self.commessa_text = Entry(self.anagr_window,width=20)
-        self.commessa_text.grid(row=3,column=1,pady=10, padx=10)"""
+
 
         self.attivo_label = Label(self.anagr_window,text="Attivo")
         self.attivo_text = Entry(self.anagr_window,width=20)
@@ -86,12 +93,15 @@ class Anagrafica:
 
         self.elenco_tree.grid(row=0,column=2, padx=10,rowspan=6,columnspan=2)
 
+        #Firts maintenance Button and positioning
         self.prima_man = Button(self.anagr_window, text="Crea prima manutenzione", command=self.first_man,
                                 state="disabled")
         self.prima_man.grid(row=6, column=3, pady=10, padx=10, sticky="w")
 
 
         def activate_first_man(event):
+            """Searches if selected machine has scheduled maintenance.
+            If positive, first manteinance button will be disabled"""
             self.elenco_tree = event.widget
             codice = self.elenco_tree.item(self.elenco_tree.selection())['values'][0]
             base = pandas.read_csv("anagrafica/manutenzioni.csv")
@@ -149,7 +159,7 @@ class Anagrafica:
         matr=self.matr_text.get()
         tipo=self.tipo_text.get()
         descr=self.descrizione_text.get()
-        comm=self.commessa_text.get()
+        comm=self.commessa_cbx.get()
         attivo=self.attivo_text.get()
         datadism=self.data_dismiss_txt.get()
 
@@ -161,7 +171,7 @@ class Anagrafica:
         self.matr_text.delete(0,END)
         self.descrizione_text.delete(0,END)
         self.tipo_text.delete(0,END)
-        self.commessa_text.delete(0,END)
+        self.commessa_cbx.delete(0,END)
         self.attivo_text.delete(0,END)
         self.data_dismiss_txt.delete(0,END)
 
@@ -170,7 +180,7 @@ class Anagrafica:
         matr=self.matr_text.get()
         tipo=self.tipo_text.get()
         desc=self.descrizione_text.get()
-        comm=self.commessa_text.get()
+        comm=self.commessa_cbx.get()
         att=self.attivo_text.get()
         dism=self.data_dismiss_txt.get()
 
@@ -181,9 +191,8 @@ class Anagrafica:
                                    (df_file["Descrizione"].str.contains(desc)) &
                                    (df_file["Tipologia"].str.contains(tipo)) &
                                    (df_file["Commessa"].str.contains(comm)) &
-                                   (df_file["Attivo"].str.contains(att))
-                                   #(df_file["Data dismissione"] == (dism))
-        ]
+                                   (df_file["Attivo"].str.contains(att))]
+                                   #(df_file["Data dismissione"] == (dism))]
         print(df_newfile_final)
 
         self.tree_values(df_newfile_final)
@@ -194,6 +203,7 @@ class Anagrafica:
         manutenzioni_window = Manutenzioni(codice=codice)
 
     def first_man(self):
+        """Creates the first row in manutenzioni.csv if no maintenance has already been scheduled """
         base = pandas.read_csv("anagrafica/manutenzioni.csv")
         df = pandas.DataFrame(base)
         df_dict = df.to_dict(orient="records")
@@ -204,7 +214,6 @@ class Anagrafica:
 
         # Creazione nuova riga
         # inserimento dati base
-
         codice = self.elenco_tree.item(self.elenco_tree.selection())['values'][0]
         tipo_int = "ordinario"
         # spostamento data avanti di 90gg
