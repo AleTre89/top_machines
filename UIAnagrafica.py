@@ -33,7 +33,7 @@ class Anagrafica:
         self.tipo_text.grid(row=1,column=1,pady=10, padx=10)
 
         self.descrizione_label = Label(self.anagr_window, text="Descrizione")
-        self.descrizione_text = Entry(self.anagr_window,width=20)
+        self.descrizione_text = Combobox(self.anagr_window, values= ["Aspiratore","Lavasciuga"],width=15)
         self.descrizione_label.grid(row=2,column=0,pady=10, padx=10)
         self.descrizione_text.grid(row=2,column=1,pady=10, padx=10)
 
