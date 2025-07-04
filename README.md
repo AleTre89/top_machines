@@ -1,5 +1,81 @@
 # top_machines
 Get to know your cleaning machines and how to keep them going 
+
+ENG 🇬🇧
+Equipment Management – Desktop App with Tkinter
+This application is designed to help manage company equipment and its maintenance, with a simple yet complete structure developed entirely in Python using Tkinter for the graphical interface.
+
+▶️ Launching the Program
+The main entry point of the application is the Principale.py file.
+Running it will open a main window with two buttons:
+
+Anagrafica: to add, search, and view equipment records.
+
+Manutenzione: to consult and update maintenance activities.
+
+📁 Project Structure
+UIAnagrafica.py
+Handles the equipment registry. From here you can:
+
+Add new equipment (serial number, type, description, project, active status, deactivation date).
+
+Search and filter equipment using various criteria.
+
+View all registered equipment in a Treeview.
+
+Create the first scheduled maintenance (in 90 days).
+
+Access the maintenance records for a specific piece of equipment.
+
+UIManutenzione.py
+Displays the list of maintenance activities recorded in the manutenzioni.csv file. It offers:
+
+Full or filtered view by date or status (to do / completed).
+
+Automatic link to the equipment registry for additional data.
+
+Access to the maintenance checklist, based on machine type.
+
+UIChecklist.py
+Contains operational checklists for:
+
+Vacuum Cleaners
+
+Scrubber Dryers
+
+Each checklist includes a set of checks to be ticked. Upon confirmation:
+
+The data is saved in the existing row in the manutenzioni.csv file.
+
+A new row is automatically created for the next maintenance (after 90 days).
+
+📂 Data Structure
+All data is handled in .csv format:
+
+anagrafica/anagrafica.csv: equipment records
+
+anagrafica/manutenzioni.csv: maintenance history
+
+anagrafica/commesse.csv: list of available projects
+
+🧰 Requirements
+Python 3.13
+
+Python libraries:
+tkinter
+pandas
+csv
+datetime
+
+▶️ Starting the Application
+Make sure all .csv files are in the anagrafica/ folder, then run:
+
+bash
+Copy
+Edit
+python Principale.py
+
+ITA 🇮🇹
 # Gestione Attrezzature – App Desktop con Tkinter
 
 Questa applicazione è pensata per aiutare nella gestione delle attrezzature aziendali e delle relative manutenzioni, con una struttura semplice ma completa sviluppata interamente in Python usando `Tkinter` per l'interfaccia grafica.
